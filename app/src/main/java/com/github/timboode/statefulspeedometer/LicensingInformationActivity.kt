@@ -1,8 +1,9 @@
-package net.timboode.statefulspeedometer
+package com.github.timboode.statefulspeedometer
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import com.github.timboode.statefulspeedometer.R
 
 class LicensingInformationActivity : AppCompatActivity() {
     // Could not include into values/strings.xml, possibly due to length limitation

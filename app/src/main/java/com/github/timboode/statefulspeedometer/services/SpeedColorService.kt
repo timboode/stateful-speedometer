@@ -1,4 +1,4 @@
-package net.timboode.statefulspeedometer.services
+package com.github.timboode.statefulspeedometer.services
 
 import android.graphics.Color
 

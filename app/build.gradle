@@ -7,9 +7,9 @@ android {
     compileSdk 35
     buildToolsVersion = '35.0.0'
 
-    namespace "net.timboode.statefulspeedometer"
+    namespace "com.github.timboode.statefulspeedometer"
     defaultConfig {
-        applicationId "net.timboode.statefulspeedometer"
+        applicationId "com.github.timboode.statefulspeedometer"
         versionName "0.1.0"
         versionCode 8
 
