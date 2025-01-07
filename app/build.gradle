@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId "com.github.timboode.statefulspeedometer"
         versionName "0.1.0"
-        versionCode 8
+        versionCode 1
 
         minSdk 15
         targetSdk 35
