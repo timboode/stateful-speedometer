@@ -1,4 +1,4 @@
-package net.timboode.statefulspeedometer.viewers
+package com.github.timboode.statefulspeedometer.viewers
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,12 +10,12 @@ import android.preference.PreferenceManager
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import net.timboode.statefulspeedometer.MainActivity
-import net.timboode.statefulspeedometer.MainActivity.Companion.KEY_CURRENT_GAS_DISTANCE
-import net.timboode.statefulspeedometer.MainActivity.Companion.KEY_GAS_WARNING_DISTANCE
-import net.timboode.statefulspeedometer.MainActivity.Companion.KEY_TOTAL_DISTANCE
-import net.timboode.statefulspeedometer.services.SpeedColorService
-import net.timboode.statefulspeedometer.R
+import com.github.timboode.statefulspeedometer.MainActivity
+import com.github.timboode.statefulspeedometer.MainActivity.Companion.KEY_CURRENT_GAS_DISTANCE
+import com.github.timboode.statefulspeedometer.MainActivity.Companion.KEY_GAS_WARNING_DISTANCE
+import com.github.timboode.statefulspeedometer.MainActivity.Companion.KEY_TOTAL_DISTANCE
+import com.github.timboode.statefulspeedometer.R
+import com.github.timboode.statefulspeedometer.services.SpeedColorService
 
 class DigitalSpeedometer1Activity : AppCompatActivity() {
     var _locationManager: LocationManager? = null

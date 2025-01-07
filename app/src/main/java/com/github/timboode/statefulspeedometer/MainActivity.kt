@@ -1,4 +1,4 @@
-package net.timboode.statefulspeedometer
+package com.github.timboode.statefulspeedometer
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -22,8 +22,11 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
-import net.timboode.statefulspeedometer.services.SpeedColorService
-import net.timboode.statefulspeedometer.viewers.DigitalSpeedometer1Activity
+import com.github.timboode.statefulspeedometer.BuildConfig
+import com.github.timboode.statefulspeedometer.LicensingInformationActivity
+import com.github.timboode.statefulspeedometer.R
+import com.github.timboode.statefulspeedometer.services.SpeedColorService
+import com.github.timboode.statefulspeedometer.viewers.DigitalSpeedometer1Activity
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
