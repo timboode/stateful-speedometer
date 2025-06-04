@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Синий квадратный спидометр</string>
+    <string name="app_name">Stateful спидометр</string>
 
     <string name="permission_location_no">Не предоставлено разрешение на местоположение</string>
     <string name="permission_location_coarse">Разрешено только приблизительное местоположение</string>
@@ -45,4 +45,10 @@
     <string name="general_caption_unset">(Не установлено)</string>
     <string name="general_button_change">Изменить</string>
     <string name="general_button_retry">Повторить</string>
+
+    <string name="unit_kilometres">км</string>
+    <string name="unit_miles">миль</string>
+    <string name="config_distance_before_gas_warning">Растояние предупреждения о заправке</string>
+    <string name="general_button_reset">Сбросить</string>
+    <string name="metrics_distance_since_gas_refill">Растояние после последней заправки</string>
 </resources>
