@@ -28,6 +28,8 @@
             android:name=".viewers.DigitalSpeedometer1Activity"
             android:exported="false"
             android:theme="@style/Theme.BlueSquareSpeedometerFullScreenNight"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="false"
             />
     </application>
 

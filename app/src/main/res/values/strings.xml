@@ -68,4 +68,8 @@
     <string name="config_distance_before_gas_warning">Gas warning distance</string>
     <string name="general_button_reset">Reset</string>
     <string name="metrics_distance_since_gas_refill">Distance since last gas refill</string>
+    <string name="general_button_set">Set</string>
+    <string name="dialog_set_total_distance">Set total distance</string>
+    <string name="metrics_distance_since_oil_change">Distance since last oil change</string>
+    <string name="config_distance_before_oil_warning">Oil change warning distance</string>
 </resources>

@@ -51,6 +51,8 @@ class MainActivity : AppCompatActivity() {
         const val KEY_TOTAL_DISTANCE:String = "total_distance"
         const val KEY_GAS_WARNING_DISTANCE:String = "gas_warning_distance"
         const val KEY_CURRENT_GAS_DISTANCE:String = "current_gas_distance"
+        const val KEY_OIL_WARNING_DISTANCE:String = "oil_warning_distance"
+        const val KEY_CURRENT_OIL_DISTANCE:String = "current_oil_distance"
     }
 
     class MyLocationListener : LocationListener {
@@ -81,6 +83,12 @@ class MainActivity : AppCompatActivity() {
         private set
 
     var currentGasDistanceInMetres: Double = 0.0
+        private set
+
+    var oilWarningDistanceInMetres: Double = 0.0
+        private set
+
+    var currentOilDistanceInMetres: Double = 0.0
         private set
 
     var lastLocation: Location? = null
@@ -130,20 +138,39 @@ class MainActivity : AppCompatActivity() {
         this.findViewById<Button>(R.id.main_activity_gas_warning_reset_button).setOnClickListener {
             resetGasDistance()
         }
+        this.findViewById<Button>(R.id.main_activity_set_total_distance_button).setOnClickListener {
+            setTotalDistance()
+        }
+        this.findViewById<Button>(R.id.main_activity_oil_warning_distance_button).setOnClickListener {
+            updateOilWarningDistance()
+        }
+        this.findViewById<Button>(R.id.main_activity_oil_change_reset_button).setOnClickListener {
+            resetOilDistance()
+        }
 
         totalDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_TOTAL_DISTANCE, 0f).toDouble()
         gasWarningDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_GAS_WARNING_DISTANCE, 50f).toDouble()
         currentGasDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_CURRENT_GAS_DISTANCE, 0f).toDouble()
+        oilWarningDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_OIL_WARNING_DISTANCE, 5000f).toDouble()
+        currentOilDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_CURRENT_OIL_DISTANCE, 0f).toDouble()
 
         val speedUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_SPEED_UNIT, PREFERENCE_VAL_SPEED_UNIT_DEFAULT)!!
         findViewById<TextView>(R.id.main_activity_version_info_footer).setText(getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME)
         findViewById<TextView>(R.id.main_activity_config_gas_warning_distance_textview).setText("" + formatDistance(gasWarningDistanceInMetres / getUnitMultiplier(speedUnit)) + " " + toDistanceUnitString(speedUnit))
+        findViewById<TextView>(R.id.main_activity_config_oil_warning_distance_textview).setText("" + formatDistance(oilWarningDistanceInMetres / getUnitMultiplier(speedUnit)) + " " + toDistanceUnitString(speedUnit))
     }
 
     private fun resetGasDistance() {
         currentGasDistanceInMetres = 0.0
         PreferenceManager.getDefaultSharedPreferences(this).edit()
             .putFloat(KEY_CURRENT_GAS_DISTANCE, currentGasDistanceInMetres.toFloat())
+            .apply()
+    }
+
+    private fun resetOilDistance() {
+        currentOilDistanceInMetres = 0.0
+        PreferenceManager.getDefaultSharedPreferences(this).edit()
+            .putFloat(KEY_CURRENT_OIL_DISTANCE, currentOilDistanceInMetres.toFloat())
             .apply()
     }
 
@@ -174,6 +201,8 @@ class MainActivity : AppCompatActivity() {
         totalDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_TOTAL_DISTANCE, 0f).toDouble()
         gasWarningDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_GAS_WARNING_DISTANCE, 50f).toDouble()
         currentGasDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_CURRENT_GAS_DISTANCE, 0f).toDouble()
+        oilWarningDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_OIL_WARNING_DISTANCE, 5000f).toDouble()
+        currentOilDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_CURRENT_OIL_DISTANCE, 0f).toDouble()
     }
 
     override fun onStop() {
@@ -307,6 +336,70 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    private fun setTotalDistance() {
+        val speedUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_SPEED_UNIT, PREFERENCE_VAL_SPEED_UNIT_DEFAULT)!!
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.dialog_set_total_distance) + " (" + toDistanceUnitString(speedUnit) + ")")
+
+        val input = EditText(this)
+        input.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+        builder.setView(input)
+
+        builder.setPositiveButton("OK") { dialog, _ ->
+            val number = input.text.toString().toDoubleOrNull()
+            if (number != null) {
+                totalDistanceInMetres = number * getUnitMultiplier(speedUnit)
+                PreferenceManager.getDefaultSharedPreferences(this).edit()
+                    .putFloat(KEY_TOTAL_DISTANCE, totalDistanceInMetres.toFloat())
+                    .apply()
+            }
+        }
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun updateOilWarningDistance() {
+        val speedUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_SPEED_UNIT, PREFERENCE_VAL_SPEED_UNIT_DEFAULT)!!
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Enter distance in " + toDistanceUnitString(speedUnit) + " before oil change warning")
+
+        val input = EditText(this)
+        input.inputType = InputType.TYPE_CLASS_NUMBER
+        builder.setView(input)
+
+        builder.setPositiveButton("OK") { dialog, _ ->
+            val number = input.text.toString().toIntOrNull()
+            if (number != null) {
+                oilWarningDistanceInMetres = number.toDouble() * (
+                        when(speedUnit) {
+                                PREFERENCE_VAL_SPEED_UNIT_KM_H -> 1000.0
+                                PREFERENCE_VAL_SPEED_UNIT_KNOT -> 1000.0
+                                PREFERENCE_VAL_SPEED_UNIT_M_S -> 1000.0
+                                PREFERENCE_VAL_SPEED_UNIT_MPH -> 1609.344
+                                else -> 1000.0
+                            }
+                        )
+                PreferenceManager.getDefaultSharedPreferences(this).edit()
+                    .putFloat(KEY_OIL_WARNING_DISTANCE, oilWarningDistanceInMetres.toFloat())
+                    .apply()
+
+                findViewById<TextView>(R.id.main_activity_config_oil_warning_distance_textview).setText("" + formatDistance(oilWarningDistanceInMetres / getUnitMultiplier(speedUnit)) + " " + toDistanceUnitString(speedUnit))
+            }
+        }
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
     private fun changeSpeedUnitButtonClicked() {
         val currentSpeedUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_SPEED_UNIT, PREFERENCE_VAL_SPEED_UNIT_DEFAULT)!!
 
@@ -397,6 +490,7 @@ class MainActivity : AppCompatActivity() {
         if (lastLocation != null) {
             totalDistanceInMetres += location.distanceTo(lastLocation!!)
             currentGasDistanceInMetres += location.distanceTo(lastLocation!!)
+            currentOilDistanceInMetres += location.distanceTo(lastLocation!!)
         }
         lastLocation = location
 
@@ -407,6 +501,9 @@ class MainActivity : AppCompatActivity() {
                 .apply()
             PreferenceManager.getDefaultSharedPreferences(this).edit()
                 .putFloat(KEY_CURRENT_GAS_DISTANCE, currentGasDistanceInMetres.toFloat())
+                .apply()
+            PreferenceManager.getDefaultSharedPreferences(this).edit()
+                .putFloat(KEY_CURRENT_OIL_DISTANCE, currentOilDistanceInMetres.toFloat())
                 .apply()
         }
     }
@@ -472,6 +569,7 @@ class MainActivity : AppCompatActivity() {
         var distanceDigitsView = findViewById<TextView>(R.id.main_activity_total_distance_digits_textview)
         var distanceUnitsView = findViewById<TextView>(R.id.main_activity_total_distance_units_textview)
         var distanceSinceGasRefillDigitsView = findViewById<TextView>(R.id.main_activity_distance_since_gas_refill_digits_textview)
+        var distanceSinceOilChangeDigitsView = findViewById<TextView>(R.id.main_activity_distance_since_oil_change_digits_textview)
 
         when(speedUnit) {
             PREFERENCE_VAL_SPEED_UNIT_KM_H -> {
@@ -484,6 +582,9 @@ class MainActivity : AppCompatActivity() {
 
                 distanceSinceGasRefillDigitsView.setText(formatDistance(this.currentGasDistanceInMetres / 1000.0))
                 findViewById<TextView>(R.id.main_activity_distance_since_gas_refill_units_textview).setText(R.string.unit_kilometres)
+
+                distanceSinceOilChangeDigitsView.setText(formatDistance(this.currentOilDistanceInMetres / 1000.0))
+                findViewById<TextView>(R.id.main_activity_distance_since_oil_change_units_textview).setText(R.string.unit_kilometres)
             }
             PREFERENCE_VAL_SPEED_UNIT_KNOT -> {
                 speedDigitsView.setText((location.speed * 3.6 / 1.852).toInt().toString())
@@ -495,6 +596,9 @@ class MainActivity : AppCompatActivity() {
 
                 distanceSinceGasRefillDigitsView.setText(formatDistance(this.currentGasDistanceInMetres / 1000.0))
                 findViewById<TextView>(R.id.main_activity_distance_since_gas_refill_units_textview).setText(R.string.unit_kilometres)
+
+                distanceSinceOilChangeDigitsView.setText(formatDistance(this.currentOilDistanceInMetres / 1000.0))
+                findViewById<TextView>(R.id.main_activity_distance_since_oil_change_units_textview).setText(R.string.unit_kilometres)
             }
             PREFERENCE_VAL_SPEED_UNIT_M_S -> {
                 speedDigitsView.setText((location.speed).toInt().toString())
@@ -506,6 +610,9 @@ class MainActivity : AppCompatActivity() {
 
                 distanceSinceGasRefillDigitsView.setText(formatDistance(this.currentGasDistanceInMetres / 1000.0))
                 findViewById<TextView>(R.id.main_activity_distance_since_gas_refill_units_textview).setText(R.string.unit_kilometres)
+
+                distanceSinceOilChangeDigitsView.setText(formatDistance(this.currentOilDistanceInMetres / 1000.0))
+                findViewById<TextView>(R.id.main_activity_distance_since_oil_change_units_textview).setText(R.string.unit_kilometres)
             }
             PREFERENCE_VAL_SPEED_UNIT_MPH -> {
                 speedDigitsView.setText((location.speed * 3.6 / 1.609344).toInt().toString())
@@ -517,6 +624,9 @@ class MainActivity : AppCompatActivity() {
 
                 distanceSinceGasRefillDigitsView.setText(formatDistance(this.currentGasDistanceInMetres / 1609.344))
                 findViewById<TextView>(R.id.main_activity_distance_since_gas_refill_units_textview).setText(R.string.unit_miles)
+
+                distanceSinceOilChangeDigitsView.setText(formatDistance(this.currentOilDistanceInMetres / 1609.344))
+                findViewById<TextView>(R.id.main_activity_distance_since_oil_change_units_textview).setText(R.string.unit_miles)
             }
         }
 

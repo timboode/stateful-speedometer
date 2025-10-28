@@ -15,8 +15,47 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="?backgroundColor"
-        android:gravity="center_vertical"
+        android:gravity="top"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="50dp"
+        android:paddingTop="100dp"
         >
+        <!-- Drag to unlock slider at the top -->
+        <RelativeLayout
+            android:id="@+id/unlock_slider_container"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#00FFFFFF"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/unlock_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Slide to unlock →"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/unlock_slider_track"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#11FFFFFF" />
+
+            <ImageView
+                android:id="@+id/unlock_slider_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="#33FFFFFF"
+                android:padding="10dp"
+                android:src="@android:drawable/ic_lock_lock" />
+        </RelativeLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,8 +68,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end"
+                android:paddingLeft="35dp"
+                android:paddingTop="200dp"
                 android:textColor="?baseTextColor"
-                android:textSize="175sp" />
+                android:textSize="250dp" />
 
             <TextView
                 android:id="@+id/digital_meter1_unit_textview"
@@ -45,28 +86,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
+            android:gravity="start"
             >
-            <ImageView
-                android:id="@+id/digital_meter1_gas_icon"
-                android:layout_width="200sp"
-                android:layout_height="200sp"
-                android:src="@drawable/gasstation"
-                android:padding="10sp"
-                android:layout_gravity="start|bottom"
-                android:visibility="invisible"
-                />
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
             <TextView
                 android:id="@+id/digital_meter1_distance_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
+                android:layout_gravity="start"
                 android:textColor="#aaaaaa"
                 android:textSize="75sp"
+                android:paddingStart="24sp"
                 />
 
             <TextView
@@ -74,9 +103,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:paddingStart="12sp"
+                android:paddingStart="3sp"
                 android:textColor="#aaaaaa"
                 android:textSize="45sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            >
+            <ImageView
+                android:id="@+id/digital_meter1_gas_icon"
+                android:layout_width="200sp"
+                android:layout_height="200sp"
+                android:src="@drawable/gasstation"
+                android:padding="10sp"
+                android:visibility="invisible"
+                />
+            <ImageView
+                android:id="@+id/digital_meter1_oil_icon"
+                android:layout_width="200sp"
+                android:layout_height="200sp"
+                android:src="@drawable/ic_oilchange"
+                android:padding="10sp"
+                android:visibility="invisible"
+                />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
