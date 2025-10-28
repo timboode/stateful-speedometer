@@ -51,4 +51,8 @@
     <string name="config_distance_before_gas_warning">Gassadvarselsavstand</string>
     <string name="general_button_reset">Nullstill</string>
     <string name="metrics_distance_since_gas_refill">Distanse siden siste gassfylling</string>
+    <string name="general_button_set">Angi</string>
+    <string name="dialog_set_total_distance">Angi total avstand</string>
+    <string name="metrics_distance_since_oil_change">Avstand siden sist oljeskift</string>
+    <string name="config_distance_before_oil_warning">Advarselsavstand for oljeskift</string>
 </resources>

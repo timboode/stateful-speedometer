@@ -51,4 +51,8 @@
     <string name="config_distance_before_gas_warning">ガス警告距離</string>
     <string name="general_button_reset">リセット</string>
     <string name="metrics_distance_since_gas_refill">前回給油からの距離</string>
+    <string name="general_button_set">セット</string>
+    <string name="dialog_set_total_distance">総距離を設定する</string>
+    <string name="metrics_distance_since_oil_change">前回オイル交換からの距離</string>
+    <string name="config_distance_before_oil_warning">オイル交換警告距離</string>
 </resources>
