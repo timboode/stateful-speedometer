@@ -12,6 +12,7 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.github.timboode.statefulspeedometer.MainActivity
 import org.junit.Assume
 import org.junit.Before
 import org.junit.Test
@@ -46,7 +47,7 @@ class MainActivityTest {
         Thread.sleep(3000)
 
         // Not sure why failing...
-        Assume.assumeTrue(Build.VERSION.SDK_INT >= 24) 
+        Assume.assumeTrue(Build.VERSION.SDK_INT >= 24)
 
         Espresso.onView(ViewMatchers.withText("Speed"))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
